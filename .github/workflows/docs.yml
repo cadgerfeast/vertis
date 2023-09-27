@@ -12,7 +12,7 @@ jobs:
     - name: Checkout 
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.ACCESS_TOKEN }}
+        token: ${{ secrets.GH_TOKEN }}
     - name: Setup 
       uses: actions/setup-node@v3
       with:
@@ -26,6 +26,6 @@ jobs:
       if: github.event_name == 'push'
       uses: peaceiris/actions-gh-pages@v3
       with:
-        personal_token: ${{ secrets.ACCESS_TOKEN }}
+        personal_token: ${{ secrets.GH_TOKEN }}
         publish_dir: ./docs/.vitepress/dist
         cname: vertis.cadgerfeast.dev
