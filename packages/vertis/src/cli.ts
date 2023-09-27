@@ -40,7 +40,7 @@ const help = [
     console.info(help);
   } else if (argv._.length === 1 && argv._[0] === 'version') {
     console.info(__VERSION__);
-  } else if (argv._.length === 1 && argv._[0] === 'generate') {
+  } else if (argv._[0] === 'generate') {
     generate(argv);
   } else {
     console.error(c.red(`Command ${c.yellow(argv._[0].toString())} does not exist.`));

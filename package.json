@@ -14,7 +14,8 @@
     "test": "nx run-many -t test --output-style=stream --projects",
     "lint": "nx run-many -t lint --output-style=stream --projects",
     "preview": "nx preview docs",
-    "publish": "lerna publish --no-private --yes"
+    "publish": "lerna publish --no-private --yes",
+    "vertis": "vertis"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
