@@ -1,0 +1,49 @@
+{
+  "name": "vertis",
+  "version": "0.0.1",
+  "description": "Your Changelog Companion",
+  "author": "Jérémie Pichon <contact@cadgerfeast.com>",
+  "homepage": "https://vertis.cadgerfeast.dev",
+  "keywords": [
+    "vertis",
+    "changelog",
+    "companion",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cadgerfeast/vertis/blob/master/packages/vertis"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "vertis": "./cli.js"
+  },
+  "files": [
+    "./dist",
+    "./cli.js"
+  ],
+  "scripts": {
+    "build": "run-s build:*",
+    "build:cli": "tsc && vite build",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@shared/tsconfig": "*",
+    "@typescript-eslint/parser": "^6.7.3",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@types/node": "^20.7.0",
+    "@types/yargs": "^17.0.25",
+    "eslint": "^8.50.0",
+    "eslint-config-vertis": "*",
+    "vite-plugin-dts": "^3.6.0"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9",
+    "yargs": "^17.7.2"
+  }
+}
