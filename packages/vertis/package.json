@@ -1,6 +1,6 @@
 {
   "name": "vertis",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Your Changelog Companion",
   "author": "Jérémie Pichon <contact@cadgerfeast.com>",
   "homepage": "https://vertis.cadgerfeast.dev",
@@ -31,10 +31,10 @@
   },
   "devDependencies": {
     "@shared/tsconfig": "*",
-    "@typescript-eslint/parser": "^6.7.3",
-    "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@types/node": "^20.7.0",
     "@types/yargs": "^17.0.25",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
     "eslint": "^8.50.0",
     "eslint-config-vertis": "*",
     "vite-plugin-dts": "^3.6.0"
