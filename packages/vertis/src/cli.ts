@@ -7,9 +7,7 @@ import generate from './api/generate.js';
 // Types
 interface Options {
   help?: boolean;
-  h?: boolean;
   version?: boolean;
-  v?: boolean;
 }
 
 const help = [
@@ -24,14 +22,14 @@ const help = [
   `  ${c.cyan('generate')}: Generates a changelog.`,
   '',
   `${c.yellow('Arguments')}:`,
-  `  ${c.yellow('--help/-h')}: Shows the help for a ${c.cyan('command')}.`,
-  `  ${c.yellow('--version/-v')}: Shows Vertis version in use.`
+  `  ${c.yellow('--help')}: Shows the help for a ${c.cyan('command')}.`,
+  `  ${c.yellow('--version')}: Shows Vertis version in use.`
 ].join('\n');
 
 (async () => {
   const argv: Arguments<Options> = await yargs(hideBin(process.argv)).help(false).argv;
   if (argv._.length === 0) {
-    if (argv.v || argv.version) {
+    if (argv.version) {
       console.info(__VERSION__);
     } else {
       console.info(help);

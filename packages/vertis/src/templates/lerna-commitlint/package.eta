@@ -1,0 +1,25 @@
+# Changelog
+
+<%- for (const release of it.releases) { -%>
+
+## <%= release.title %>
+
+<%- for (const COMMITLINT_TYPE of it.COMMITLINT_TYPES) { -%>
+
+<%- const commits = release.changelog.filter(({ type }) => type === COMMITLINT_TYPE); -%>
+
+<%- if (commits.length > 0 ) { -%>
+
+### <%= it.COMMITLINT_EMOJIS[COMMITLINT_TYPE] %> <%= it.COMMITLINT_LABELS[COMMITLINT_TYPE] %>
+
+<%- for (const commit of commits) { -%>
+
+- <%= commit.name %> ([<%= commit.hash.slice(0, 7) %>](<%= it.repositoryURL %>/commit/<%= commit.hash %>))
+
+<%- } -%>
+
+<%- } -%>
+
+<%- } -%>
+
+<%- } -%>
