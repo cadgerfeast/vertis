@@ -12,7 +12,7 @@ export default defineConfig({
       entry: [
         path.resolve(__dirname, './src/cli.ts'),
         path.resolve(__dirname, './src/index.ts'),
-        path.resolve(__dirname, './src/client.ts')
+        path.resolve(__dirname, './src/strategy.ts')
       ],
       formats: ['es']
     },
@@ -23,7 +23,10 @@ export default defineConfig({
         'path',
         'fs',
         'url',
-        'assert'
+        'assert',
+        'module',
+        'stream',
+        'constants'
       ]
     }
   },
