@@ -4,6 +4,7 @@ import { hideBin } from 'yargs/helpers';
 import c from 'chalk';
 // Commands
 import generate from './api/generate.js';
+import release from './api/release.js';
 // Types
 interface Options {
   help?: boolean;
@@ -20,6 +21,7 @@ const help = [
   `  ${c.cyan('help')}: Show those helpful notes.`,
   `  ${c.cyan('version')}: Shows Vertis version in use.`,
   `  ${c.cyan('generate')}: Generates a changelog.`,
+  `  ${c.cyan('release')}: Creates a release.`,
   '',
   `${c.yellow('Arguments')}:`,
   `  ${c.yellow('--help')}: Shows the help for a ${c.cyan('command')}.`,
@@ -40,6 +42,8 @@ const help = [
     console.info(__VERSION__);
   } else if (argv._[0] === 'generate') {
     generate(argv);
+  } else if (argv._[0] === 'release') {
+    release(argv);
   } else {
     console.error(c.red(`Command ${c.yellow(argv._[0].toString())} does not exist.`));
   }

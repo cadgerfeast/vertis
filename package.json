@@ -17,7 +17,8 @@
     "preview": "nx preview docs",
     "version": "lerna version",
     "changelog": "vertis generate",
-    "publish": "lerna publish from-git"
+    "publish": "lerna publish from-git",
+    "release": "vertis release"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
