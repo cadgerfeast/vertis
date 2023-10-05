@@ -2,7 +2,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { mergeAll } from 'remeda';
-import { Strategy, lernaCommitlint } from '../strategy.js';
+import { Strategy, lernaConventional } from '../strategy.js';
 
 type VertisConfig = {
 	strategy: () => Promise<Strategy>;
@@ -19,7 +19,7 @@ export function mergeConfig (...configs: VertisConfig[]): VertisConfig {
 }
 
 const defaultConfig: VertisConfig = {
-	strategy: lernaCommitlint()
+	strategy: lernaConventional()
 };
 
 export async function getConfig (dir: string = process.cwd()): Promise<VertisConfig> {

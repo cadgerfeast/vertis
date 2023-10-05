@@ -16,7 +16,7 @@ hero:
 features:
   - icon: 🍰
     title: Easy to Use
-    details: Relies on <a href="https://commitlint.js.org/">commitlint</a> and squash merging to generate cool changelogs
+    details: Relies on a set of simple commands to generate changelogs and releases
   - icon: 🛠️
     title: Heavily Customizable
     details: Use your own template to generate your changelog

@@ -29,6 +29,10 @@ jobs:
       run: npm ci
     - name: Build
       run: npm run build -- --projects vertis
+    - name: Version
+      run: npm run version
+    - name: Changelog
+      run: npm run vertis generate
     - name: Publish
       run: npm run publish
       env:

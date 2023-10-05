@@ -6,7 +6,13 @@
       "allowBranch": ["master"],
       "conventionalCommits": true,
       "message": "chore: release",
-      "changelog": false
+      "changelog": false,
+      "private": false,
+      "yes": true
+    },
+    "publish": {
+      "private": false,
+      "yes": true
     }
   }
 }
