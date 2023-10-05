@@ -10,6 +10,7 @@
       "message": "chore: release",
       "tagVersionPrefix": "vertis@",
       "changelog": false,
+      "push": false,
       "private": false,
       "yes": true
     },
