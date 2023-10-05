@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.0](https://github.com/cadgerfeast/vertis/compare/68d7bd2...8c80e40) (05/10/2023 - 16:51)
+
+### ✨ New Features
+
+- add generate api command ([69ea60f](https://github.com/cadgerfeast/vertis/commit/69ea60fa84684a09dac6e88d19c2af224e7a5112))
+
+### 📚 Documentation
+
+- first documentation draft ([0770f52](https://github.com/cadgerfeast/vertis/commit/0770f52d2b5b600ce424c977893bdc81c9dcc5ea))
+
+### 🛠️ Continuous Integration
+
+- add checks workflow ([cffb827](https://github.com/cadgerfeast/vertis/commit/cffb8273641734cc3e9704c4bd230b719fc3ba94))
+
 ## [0.0.3](https://github.com/cadgerfeast/vertis/compare/41c7f6d...68d7bd2) (27/09/2023 - 14:27)
 
 ### ♻️ Refactoring

@@ -32,7 +32,10 @@ jobs:
     - name: Version
       run: npm run version
     - name: Changelog
-      run: npm run vertis generate
+      run: |
+        npm run changelog
+        git commit -a --amend --no-edit
+        git push --force
     - name: Publish
       run: npm run publish
       env:

@@ -16,8 +16,8 @@
     "lint": "nx run-many -t lint --output-style=stream --projects",
     "preview": "nx preview docs",
     "version": "lerna version",
-    "publish": "lerna publish from-git",
-    "vertis": "vertis"
+    "changelog": "vertis generate",
+    "publish": "lerna publish from-git"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
