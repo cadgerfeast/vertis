@@ -1,8 +1,10 @@
 # Changelog
 
-## [0.1.1](https://github.com/cadgerfeast/vertis/compare/8c80e40...d0e6625) (05/10/2023 - 16:11)
+## [0.1.2](https://github.com/cadgerfeast/vertis/compare/8c80e40...150d2a3) (05/10/2023 - 16:17)
 
 ### 🐛 Bug Fixes
+
+- do no push on lerna version ([eb01ee0](https://github.com/cadgerfeast/vertis/commit/eb01ee0be3e04d837276adc72a2c210648351286))
 
 - add missing release placeholder command ([a254071](https://github.com/cadgerfeast/vertis/commit/a254071711886196ebdc69e8e058519b2e1d4426))
 
