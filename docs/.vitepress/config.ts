@@ -22,6 +22,10 @@ export default defineConfig({
 					{
 						text: 'Contributing',
 						link: 'https://github.com/cadgerfeast/vertis/blob/master/CONTRIBUTING.md'
+					},
+					{
+						text: 'Changelog',
+						link: 'https://github.com/cadgerfeast/vertis/blob/master/CHANGELOG.md'
 					}
 				]
 			}
@@ -37,6 +41,13 @@ export default defineConfig({
 					items: [
 						{ text: 'What is Vertis?', link: '/guide/what-is-vertis' },
 						{ text: 'Getting Started', link: '/guide/getting-started' }
+					]
+				},
+				{
+					text: 'Strategies',
+					collapsed: false,
+					items: [
+						{ text: 'Lerna Conventional', link: '/guide/strategies/lerna-conventional' }
 					]
 				}
 			]

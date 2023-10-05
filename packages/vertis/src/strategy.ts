@@ -8,8 +8,8 @@ import { globSync } from 'glob';
 import { mergeAll } from 'remeda';
 import { Changelog, Commit, Package, PackageRelease, Release } from './index.js';
 // Templates
-import lernaCommitlintDate from './templates/lerna-commitlint/date.eta?raw';
-import lernaCommitlintPackage from './templates/lerna-commitlint/package.eta?raw';
+import lernaConventionalDate from './templates/lerna-conventional/date.eta?raw';
+import lernaConventionalPackage from './templates/lerna-conventional/package.eta?raw';
 // Constants
 const eta = new Eta({ autoTrim: false });
 
@@ -29,7 +29,7 @@ function getWorkspacePackages (pkgPath: string): Package[] {
 	return workspacePackages;
 }
 
-export const COMMITLINT_TYPES = [
+export const CONVENTIONAL_TYPES = [
 	'feat',
 	'fix',
 	'revert',
@@ -43,7 +43,7 @@ export const COMMITLINT_TYPES = [
 	'chore',
 	'unknown'
 ] as const;
-const COMMITLINT_EMOJIS: Record<CommitlintType, string> = {
+const CONVENTIONAL_EMOJIS: Record<ConventionalType, string> = {
 	build: '📦',
 	chore: '🏗',
 	ci: '🛠️',
@@ -57,7 +57,7 @@ const COMMITLINT_EMOJIS: Record<CommitlintType, string> = {
 	test: '🚦',
 	unknown: '🔖'
 };
-const COMMITLINT_LABELS: Record<CommitlintType, string> = {
+const CONVENTIONAL_LABELS: Record<ConventionalType, string> = {
 	build: 'Builds',
 	chore: 'Chores',
 	ci: 'Continuous Integration',
@@ -71,18 +71,18 @@ const COMMITLINT_LABELS: Record<CommitlintType, string> = {
 	test: 'Tests',
 	unknown: 'Misc'
 };
-export type CommitlintType = typeof COMMITLINT_TYPES[number];
-export type CommitlintCommit = Commit & {
-	type: CommitlintType;
+export type ConventionalType = typeof CONVENTIONAL_TYPES[number];
+export type ConventionalCommit = Commit & {
+	type: ConventionalType;
 	name: string;
 };
-export type CommitlintChangelog = CommitlintCommit[];
+export type ConventionalChangelog = ConventionalCommit[];
 
-function computeCommitlintChangelog (changelog: Changelog): CommitlintChangelog {
-	const newChangelog: CommitlintChangelog = [];
+function computeConventionalChangelog (changelog: Changelog): ConventionalChangelog {
+	const newChangelog: ConventionalChangelog = [];
 	for (const commit of changelog) {
 		const [messageType, ...splits] = commit.message.split(':');
-		const type = ((COMMITLINT_TYPES as readonly string[]).includes(messageType) ? messageType : 'unknown') as CommitlintType;
+		const type = ((CONVENTIONAL_TYPES as readonly string[]).includes(messageType) ? messageType : 'unknown') as ConventionalType;
 		newChangelog.push({
 			...commit,
 			name: splits.join(':').trim(),
@@ -134,13 +134,13 @@ type FilterPackage = (pkg: Package) => boolean;
 type FilterReleaseCommit = (commit: Commit) => boolean;
 type ComputePackageReleases = (tags: string[], pkgs: string[]) => PackageRelease[];
 
-type LernaCommitlintOptions = {
+type LernaConventionalOptions = {
 	filterPackage: FilterPackage;
 	filterReleaseCommit: FilterReleaseCommit;
 	computePackageReleases: ComputePackageReleases;
 };
 
-const lernaCommitlintDefaultOptions: LernaCommitlintOptions = {
+const lernaConventionalDefaultOptions: LernaConventionalOptions = {
 	filterPackage: (pkg) => !pkg.private,
 	filterReleaseCommit: (commit) => commit.message === 'chore: release',
 	computePackageReleases: (tags, pkgs) => {
@@ -159,8 +159,8 @@ const lernaCommitlintDefaultOptions: LernaCommitlintOptions = {
 	}
 };
 
-export function lernaCommitlint (userOptions?: LernaCommitlintOptions): () => Promise<Strategy> {
-	const { filterPackage, filterReleaseCommit, computePackageReleases } = mergeAll([lernaCommitlintDefaultOptions, userOptions]);
+export function lernaConventional (userOptions?: LernaConventionalOptions): () => Promise<Strategy> {
+	const { filterPackage, filterReleaseCommit, computePackageReleases } = mergeAll([lernaConventionalDefaultOptions, userOptions]);
 	return async (): Promise<Strategy> => {
 		const pkgPath = path.resolve(process.cwd(), 'package.json');
 		const lernaConfigPath = path.resolve(process.cwd(), 'lerna.json');
@@ -170,22 +170,22 @@ export function lernaCommitlint (userOptions?: LernaCommitlintOptions): () => Pr
 			let template: string;
 			if (lernaConfig.version === 'independent') {
 				console.debug(c.gray(`Generating changelog for ${c.white(`"${pkgs.map(({ name }) => name).join(', ')}"`)}`));
-				template = lernaCommitlintDate;
+				template = lernaConventionalDate;
 			} else if (pkgs.length > 0) {
 				console.debug(c.gray(`Generating ${c.white(`"${pkgs[0].name}"`)} package changelog.`));
-				template = lernaCommitlintPackage;
+				template = lernaConventionalPackage;
 			} else {
 				throw new Error('Could not find any workspace');
 			}
 			return {
 				computeChangelogContent (repositoryURL: string, changelog: Changelog) {
-					const releases: Release[] = computeReleases(repositoryURL, computeCommitlintChangelog(changelog), pkgs, filterReleaseCommit, computePackageReleases);
+					const releases: Release[] = computeReleases(repositoryURL, computeConventionalChangelog(changelog), pkgs, filterReleaseCommit, computePackageReleases);
 					return eta.renderString(template, {
 						repositoryURL,
 						releases,
-						COMMITLINT_TYPES,
-						COMMITLINT_EMOJIS,
-						COMMITLINT_LABELS
+						CONVENTIONAL_TYPES,
+						CONVENTIONAL_EMOJIS,
+						CONVENTIONAL_LABELS
 					});
 				}
 			};
