@@ -1,6 +1,16 @@
 # Changelog
 
-## [0.1.0](https://github.com/cadgerfeast/vertis/compare/68d7bd2...8c80e40) (05/10/2023 - 16:51)
+## [0.1.1](https://github.com/cadgerfeast/vertis/compare/8c80e40...d0e6625) (05/10/2023 - 16:11)
+
+### 🐛 Bug Fixes
+
+- add missing release placeholder command ([a254071](https://github.com/cadgerfeast/vertis/commit/a254071711886196ebdc69e8e058519b2e1d4426))
+
+### 🛠️ Continuous Integration
+
+- fix tag versioning and release process ([a661ec6](https://github.com/cadgerfeast/vertis/commit/a661ec6d26db829aa2b27c7f0c4274cec634e707))
+
+## [0.1.0](https://github.com/cadgerfeast/vertis/compare/68d7bd2...8c80e40) (05/10/2023 - 14:51)
 
 ### ✨ New Features
 
@@ -14,13 +24,13 @@
 
 - add checks workflow ([cffb827](https://github.com/cadgerfeast/vertis/commit/cffb8273641734cc3e9704c4bd230b719fc3ba94))
 
-## [0.0.3](https://github.com/cadgerfeast/vertis/compare/41c7f6d...68d7bd2) (27/09/2023 - 14:27)
+## [0.0.3](https://github.com/cadgerfeast/vertis/compare/41c7f6d...68d7bd2) (27/09/2023 - 12:27)
 
 ### ♻️ Refactoring
 
 - add generate command delimiter ([ff90006](https://github.com/cadgerfeast/vertis/commit/ff900067862864180a6b0424a04b007c1ef8054d))
 
-## 0.0.2 (27/09/2023 - 12:25)
+## 0.0.2 (27/09/2023 - 10:25)
 
 ### 🛠️ Continuous Integration
 
