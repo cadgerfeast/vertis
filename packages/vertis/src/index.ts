@@ -27,6 +27,7 @@ export type Package = {
 
 export type PackageRelease = {
 	name: string;
+	tag: string;
 	newVersion: string;
 	oldVersion?: string;
 };

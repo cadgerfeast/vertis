@@ -95,15 +95,15 @@ function computeConventionalChangelog (changelog: Changelog): ConventionalChange
 function computeReleases (repositoryURL: string, changelog: Changelog, pkgs: Package[] , filterReleaseCommit: FilterReleaseCommit, computePackageReleases: ComputePackageReleases): Release[] {
 	const releases: Release[] = [];
 	let releaseChangelog: Changelog = [];
-	let lastCommitHash: string|null = null;
+	let lastCommitTag: string|null = null;
 	for (let i = changelog.length - 1; i >= 0; i--) {
 		if (filterReleaseCommit(changelog[i])) {
 			const packageReleases = computePackageReleases(changelog[i].tags, pkgs.map(({ name }) => name));
 			if (packageReleases.length !== 0) {
 				const releaseDate = dayjs(changelog[i].date).format('DD/MM/YYYY - HH:mm');
 				let title = pkgs.length === 1 ? `${packageReleases[0].newVersion} (${releaseDate})` : releaseDate;
-				if (lastCommitHash) {
-					const compareLink = `${repositoryURL}/compare/${lastCommitHash.slice(0, 7)}...${changelog[i].hash.slice(0, 7)}`;
+				if (lastCommitTag) {
+					const compareLink = `${repositoryURL}/compare/${lastCommitTag}...${packageReleases[0].tag}`;
 					title = pkgs.length === 1 ? `[${packageReleases[0].newVersion}](${compareLink}) (${releaseDate})` : `[${releaseDate}](${compareLink})`;
 				}
 				releases.push({
@@ -112,7 +112,7 @@ function computeReleases (repositoryURL: string, changelog: Changelog, pkgs: Pac
 					changelog: releaseChangelog.reverse()
 				});
 				releaseChangelog = [];
-				lastCommitHash = changelog[i].hash;
+				lastCommitTag = packageReleases[0].tag;
 			}
 		} else {
 			releaseChangelog.push(changelog[i]);
@@ -150,6 +150,7 @@ const lernaConventionalDefaultOptions: LernaConventionalOptions = {
 				if (tag.startsWith(`${pkg}@`)) {
 					packageReleases.push({
 						name: pkg,
+						tag,
 						newVersion: tag.replace(`${pkg}@`, '')
 					});
 				}
