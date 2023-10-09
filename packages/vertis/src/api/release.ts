@@ -31,7 +31,8 @@ export async function release ({}: ReleaseOptions) {
     repositoryURL = repositoryURL.replace(':', '/').replace('git@', 'https://').replace('.git', '')
   }
 	const config = await getConfig();
-  console.debug(c.gray(`Generating ${c.white(`"${config.releaseTarget}"`)} release.`));
+  const { releaseTarget } = await config.strategy();
+  console.debug(c.gray(`Generating ${c.white(`"${releaseTarget}"`)} release.`));
 }
 
 export default async (argv: Arguments<Options>) => {

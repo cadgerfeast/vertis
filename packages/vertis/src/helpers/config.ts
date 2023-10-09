@@ -4,11 +4,8 @@ import * as fs from 'fs';
 import { mergeAll } from 'remeda';
 import { Strategy, lernaConventional } from '../strategy.js';
 
-export type ReleaseTarget = 'github';
-
 type VertisConfig = {
 	strategy: () => Promise<Strategy>;
-	releaseTarget: ReleaseTarget;
 };
 
 type UserConfig = Partial<VertisConfig>;
@@ -22,8 +19,7 @@ export function mergeConfig (...configs: VertisConfig[]): VertisConfig {
 }
 
 const defaultConfig: VertisConfig = {
-	strategy: lernaConventional(),
-	releaseTarget: 'github'
+	strategy: lernaConventional()
 };
 
 export async function getConfig (dir: string = process.cwd()): Promise<VertisConfig> {

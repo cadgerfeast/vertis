@@ -13,8 +13,11 @@ import lernaConventionalPackage from './templates/lerna-conventional/package.eta
 // Constants
 const eta = new Eta({ autoTrim: false });
 
+export type ReleaseTarget = 'github';
+
 export type Strategy = {
 	computeChangelogContent: (repositoryUrl: string, changelog: Changelog) => string;
+	releaseTarget: ReleaseTarget;
 };
 
 function getWorkspacePackages (pkgPath: string): Package[] {
@@ -152,6 +155,7 @@ type LernaConventionalOptions = {
 	filterPackage: FilterPackage;
 	filterReleaseCommit: FilterReleaseCommit;
 	computePackageReleases: ComputePackageReleases;
+	releaseTarget: ReleaseTarget;
 };
 
 const lernaConventionalDefaultOptions: LernaConventionalOptions = {
@@ -171,11 +175,12 @@ const lernaConventionalDefaultOptions: LernaConventionalOptions = {
 			}
 		}
 		return packageReleases;
-	}
+	},
+	releaseTarget: 'github'
 };
 
 export function lernaConventional (userOptions?: LernaConventionalOptions): () => Promise<Strategy> {
-	const { filterPackage, filterReleaseCommit, computePackageReleases } = mergeAll([lernaConventionalDefaultOptions, userOptions]);
+	const { filterPackage, filterReleaseCommit, computePackageReleases, releaseTarget } = mergeAll([lernaConventionalDefaultOptions, userOptions]);
 	return async (): Promise<Strategy> => {
 		const pkgPath = path.resolve(process.cwd(), 'package.json');
 		const lernaConfigPath = path.resolve(process.cwd(), 'lerna.json');
@@ -202,7 +207,8 @@ export function lernaConventional (userOptions?: LernaConventionalOptions): () =
 						CONVENTIONAL_EMOJIS,
 						CONVENTIONAL_LABELS
 					});
-				}
+				},
+				releaseTarget
 			};
 		}
 		throw new Error('Could not find any package.json');
