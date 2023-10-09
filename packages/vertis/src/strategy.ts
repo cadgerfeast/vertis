@@ -78,14 +78,28 @@ export type ConventionalCommit = Commit & {
 };
 export type ConventionalChangelog = ConventionalCommit[];
 
+function getCommitData (message: string) {
+	const splits = new RegExp(`^(?<type>${CONVENTIONAL_TYPES.join('|')})(?<scope>\\(\\w+\\)?((?=:\\s)|(?=!:\\s)))?(?<breaking>!)?(?<subject>:\\s.*)?|^(?<merge>Merge \\w+)`).exec(message);
+	if (splits) {
+		return {
+			type: splits[1],
+			message: splits[5].replace(':', '').trim()
+		};
+	}
+	return {
+		type: 'unknown',
+		message
+	};
+}
+
 function computeConventionalChangelog (changelog: Changelog): ConventionalChangelog {
 	const newChangelog: ConventionalChangelog = [];
 	for (const commit of changelog) {
-		const [messageType, ...splits] = commit.message.split(':');
-		const type = ((CONVENTIONAL_TYPES as readonly string[]).includes(messageType) ? messageType : 'unknown') as ConventionalType;
+		const data = getCommitData(commit.message);
+		const type = ((CONVENTIONAL_TYPES as readonly string[]).includes(data.type) ? data.type : 'unknown') as ConventionalType;
 		newChangelog.push({
 			...commit,
-			name: splits.join(':').trim(),
+			name: data.message,
 			type
 		});
 	}
