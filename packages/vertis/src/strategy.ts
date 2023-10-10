@@ -135,6 +135,8 @@ function computeReleases (repositoryURL: string, changelog: Changelog, pkgs: Pac
 				});
 				releaseChangelog = [];
 				lastCommitTag = packageReleases[0].tag;
+			} else {
+				releaseChangelog.push(changelog[i]);
 			}
 		} else {
 			releaseChangelog.push(changelog[i]);

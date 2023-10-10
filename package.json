@@ -17,7 +17,7 @@
     "preview": "nx preview docs",
     "version": "lerna version",
     "changelog": "vertis generate",
-    "publish": "lerna publish from-git",
+    "publish": "lerna publish from-package",
     "release": "vertis release"
   },
   "devDependencies": {
