@@ -1,6 +1,20 @@
 # Changelog
 
-## 0.1.0 (10/10/2023 - 12:03)
+## 0.1.1 (10/10/2023 - 11:33)
+
+### 🐛 Bug Fixes
+
+- rewrite changelog ([3dec9c8](https://github.com/cadgerfeast/vertis/commit/3dec9c8166d9a2cbd644a7ebb4286e4f4f8b0512))
+
+### 🛠️ Continuous Integration
+
+- split release and changelog commits ([48b0101](https://github.com/cadgerfeast/vertis/commit/48b0101749f52d8263706192335ad12e9f735723))
+
+### 🏗 Chores
+
+- fix package.json github repository link ([f8d2d94](https://github.com/cadgerfeast/vertis/commit/f8d2d945cd1bf75fefc054c71ecf3da112c9fa7e))
+
+## 0.1.0 (10/10/2023 - 10:03)
 
 ### ✨ New Features
 
@@ -50,13 +64,13 @@
 
 - release ([8c80e40](https://github.com/cadgerfeast/vertis/commit/8c80e40abbc6c4b9faef1cffd13c8caeb23a1121))
 
-## 0.0.3 (27/09/2023 - 14:27)
+## 0.0.3 (27/09/2023 - 12:27)
 
 ### ♻️ Refactoring
 
 - add generate command delimiter ([ff90006](https://github.com/cadgerfeast/vertis/commit/ff900067862864180a6b0424a04b007c1ef8054d))
 
-## 0.0.2 (27/09/2023 - 12:25)
+## 0.0.2 (27/09/2023 - 10:25)
 
 ### 🛠️ Continuous Integration
 
