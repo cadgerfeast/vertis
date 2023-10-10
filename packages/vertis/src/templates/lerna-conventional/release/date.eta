@@ -1,0 +1,33 @@
+## 🚀 Releases
+
+<%- for (const package of it.release.packages) { -%>
+
+<%- if (package.oldVersion) { -%>
+
+- `<%= package.name %>`: *<%= package.oldVersion %>* -> **<%= package.newVersion %>**
+
+<%- } else { -%>
+
+- `<%= package.name %>`: **<%= package.newVersion %>**
+
+<%- } -%>
+
+<%- } -%>
+
+<%- for (const CONVENTIONAL_TYPE of it.CONVENTIONAL_TYPES) { -%>
+
+<%- const commits = it.release.changelog.filter(({ type }) => type === CONVENTIONAL_TYPE); -%>
+
+<%- if (commits.length > 0 ) { -%>
+
+## <%= it.CONVENTIONAL_EMOJIS[CONVENTIONAL_TYPE] %> <%= it.CONVENTIONAL_LABELS[CONVENTIONAL_TYPE] %>
+
+<%- for (const commit of commits) { -%>
+
+- <%= commit.name %> ([<%= commit.hash.slice(0, 7) %>](<%= it.repositoryURL %>/commit/<%= commit.hash %>))
+
+<%- } -%>
+
+<%- } -%>
+
+<%- } -%>

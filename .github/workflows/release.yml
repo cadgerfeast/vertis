@@ -40,3 +40,7 @@ jobs:
       run: npm run publish
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    - name: Release
+      run: npm run release
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}

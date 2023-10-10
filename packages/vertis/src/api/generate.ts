@@ -2,12 +2,10 @@
 import type { Arguments } from 'yargs';
 import * as path from 'path';
 import c from 'chalk';
-import { simpleGit } from 'simple-git';
 import * as fs from '../helpers/fs.js';
 import { getConfig } from '../helpers/config.js';
+import { git, getRemoteGitURL } from '../helpers/git.js';
 import { Changelog } from '../index.js';
-// Constants
-const git = simpleGit();
 // Types
 interface Options {
   help?: boolean;
@@ -25,20 +23,14 @@ const help = [
   `  ${c.yellow('--to')}: Specify the "to" delimiter (defaults to latest commit).`
 ].join('\n');
 
-type GenerateOptions = {
+export type GenerateOptions = {
   from?: string;
   to?: string;
   filePath?: string;
 }
 
 export async function generate ({ from, to, filePath }: GenerateOptions) {
-  let repositoryURL = (await git.getConfig('remote.origin.url')).value;
-  if (!repositoryURL) {
-    throw new Error('Could not find valid github repository.');
-  }
-  if (repositoryURL.startsWith('git@')) {
-    repositoryURL = repositoryURL.replace(':', '/').replace('git@', 'https://').replace('.git', '')
-  }
+  const repositoryURL = await getRemoteGitURL();
   const data = await git.log();
   let fromHash: string = data.all[data.all.length - 1].hash;
   let toHash: string = data.all[0].hash;

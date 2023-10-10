@@ -16,6 +16,7 @@ export type Changelog = Commit[];
 
 export type Release = {
 	title: string;
+	markdownTitle: string;
 	packages: PackageRelease[];
 	changelog: Changelog;
 };
@@ -34,4 +35,5 @@ export type PackageRelease = {
 
 export { defineConfig } from './helpers/config.js';
 
-export { generate } from './api/generate.js';
+export { generate, type GenerateOptions } from './api/generate.js';
+export { release, type ReleaseOptions } from './api/release.js';

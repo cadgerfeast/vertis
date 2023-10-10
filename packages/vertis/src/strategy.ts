@@ -3,20 +3,23 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { Eta } from 'eta';
 import dayjs from 'dayjs'
-import c from 'chalk';
 import { globSync } from 'glob';
 import { mergeAll } from 'remeda';
 import { Changelog, Commit, Package, PackageRelease, Release } from './index.js';
 // Templates
-import lernaConventionalDate from './templates/lerna-conventional/date.eta?raw';
-import lernaConventionalPackage from './templates/lerna-conventional/package.eta?raw';
+import lernaConventionalChangelogDate from './templates/lerna-conventional/changelog/date.eta?raw';
+import lernaConventionalChangelogPackage from './templates/lerna-conventional/changelog/package.eta?raw';
+import lernaConventionalReleaseDate from './templates/lerna-conventional/release/date.eta?raw';
+import lernaConventionalReleasePackage from './templates/lerna-conventional/release/package.eta?raw';
 // Constants
 const eta = new Eta({ autoTrim: false });
 
 export type ReleaseTarget = 'github';
 
 export type Strategy = {
-	computeChangelogContent: (repositoryUrl: string, changelog: Changelog) => string;
+	computeChangelogContent: (repositoryURL: string, changelog: Changelog) => string;
+	computeReleaseContent: (repositoryURL: string, release: Release) => string;
+	computeReleases: (repositoryURL: string, changelog: Changelog) => Release[];
 	releaseTarget: ReleaseTarget;
 };
 
@@ -118,13 +121,15 @@ function computeReleases (repositoryURL: string, changelog: Changelog, pkgs: Pac
 			const packageReleases = computePackageReleases(changelog[i].tags, pkgs.map(({ name }) => name));
 			if (packageReleases.length !== 0) {
 				const releaseDate = dayjs(changelog[i].date).format('DD/MM/YYYY - HH:mm');
-				let title = pkgs.length === 1 ? `${packageReleases[0].newVersion} (${releaseDate})` : releaseDate;
+				const title = pkgs.length === 1 ? `${packageReleases[0].newVersion} (${releaseDate})` : releaseDate;
+				let markdownTitle = title;
 				if (lastCommitTag) {
 					const compareLink = `${repositoryURL}/compare/${lastCommitTag}...${packageReleases[0].tag}`;
-					title = pkgs.length === 1 ? `[${packageReleases[0].newVersion}](${compareLink}) (${releaseDate})` : `[${releaseDate}](${compareLink})`;
+					markdownTitle = pkgs.length === 1 ? `[${packageReleases[0].newVersion}](${compareLink}) (${releaseDate})` : `[${releaseDate}](${compareLink})`;
 				}
 				releases.push({
 					title,
+					markdownTitle,
 					packages: packageReleases,
 					changelog: releaseChangelog.reverse()
 				});
@@ -187,22 +192,35 @@ export function lernaConventional (userOptions?: LernaConventionalOptions): () =
 		if (fs.existsSync(pkgPath) && fs.existsSync(lernaConfigPath)) {
 			const lernaConfig = JSON.parse(fs.readFileSync(lernaConfigPath, 'utf8'));
 			const pkgs = getWorkspacePackages(pkgPath).filter(filterPackage);
-			let template: string;
+			let changelogTemplate: string;
+			let releaseTemplate: string;
 			if (lernaConfig.version === 'independent') {
-				console.debug(c.gray(`Generating changelog for ${c.white(`"${pkgs.map(({ name }) => name).join(', ')}"`)}`));
-				template = lernaConventionalDate;
+				changelogTemplate = lernaConventionalChangelogDate;
+				releaseTemplate = lernaConventionalReleaseDate;
 			} else if (pkgs.length > 0) {
-				console.debug(c.gray(`Generating ${c.white(`"${pkgs[0].name}"`)} package changelog.`));
-				template = lernaConventionalPackage;
+				changelogTemplate = lernaConventionalChangelogPackage;
+				releaseTemplate = lernaConventionalReleasePackage;
 			} else {
 				throw new Error('Could not find any workspace');
 			}
 			return {
 				computeChangelogContent (repositoryURL: string, changelog: Changelog) {
 					const releases: Release[] = computeReleases(repositoryURL, computeConventionalChangelog(changelog), pkgs, filterReleaseCommit, computePackageReleases);
-					return eta.renderString(template, {
+					return eta.renderString(changelogTemplate, {
 						repositoryURL,
 						releases,
+						CONVENTIONAL_TYPES,
+						CONVENTIONAL_EMOJIS,
+						CONVENTIONAL_LABELS
+					});
+				},
+				computeReleases (repositoryURL: string, changelog: Changelog) {
+					return computeReleases(repositoryURL, computeConventionalChangelog(changelog), pkgs, filterReleaseCommit, computePackageReleases);
+				},
+				computeReleaseContent (repositoryURL: string, release: Release) {
+					return eta.renderString(releaseTemplate, {
+						repositoryURL,
+						release,
 						CONVENTIONAL_TYPES,
 						CONVENTIONAL_EMOJIS,
 						CONVENTIONAL_LABELS
