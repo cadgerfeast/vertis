@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 (10/10/2023 - 10:03)
+## 0.1.0 (10/10/2023 - 12:03)
 
 ### ✨ New Features
 
@@ -50,13 +50,13 @@
 
 - release ([8c80e40](https://github.com/cadgerfeast/vertis/commit/8c80e40abbc6c4b9faef1cffd13c8caeb23a1121))
 
-## 0.0.3 (27/09/2023 - 12:27)
+## 0.0.3 (27/09/2023 - 14:27)
 
 ### ♻️ Refactoring
 
 - add generate command delimiter ([ff90006](https://github.com/cadgerfeast/vertis/commit/ff900067862864180a6b0424a04b007c1ef8054d))
 
-## 0.0.2 (27/09/2023 - 10:25)
+## 0.0.2 (27/09/2023 - 12:25)
 
 ### 🛠️ Continuous Integration
 
