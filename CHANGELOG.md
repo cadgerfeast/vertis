@@ -1,10 +1,12 @@
 # Changelog
 
-## 0.2.0 (10/10/2023 - 09:31)
+## 0.3.0 (10/10/2023 - 09:51)
 
 ### ✨ New Features
 
 - add github release command ([ee1945f](https://github.com/cadgerfeast/vertis/commit/ee1945f8facf8228bf2dadd90261f5b6dfcf6b95))
+
+- add generate api command ([69ea60f](https://github.com/cadgerfeast/vertis/commit/69ea60fa84684a09dac6e88d19c2af224e7a5112))
 
 ### 🐛 Bug Fixes
 
@@ -20,25 +22,17 @@
 
 - add lerna-conventional configuration description ([87cac18](https://github.com/cadgerfeast/vertis/commit/87cac1891ecffe8f058a3e25f7c9785fd98cf4c5))
 
+- first documentation draft ([0770f52](https://github.com/cadgerfeast/vertis/commit/0770f52d2b5b600ce424c977893bdc81c9dcc5ea))
+
 ### ♻️ Refactoring
 
 - move releaseTarget to strategy option ([7c40b6c](https://github.com/cadgerfeast/vertis/commit/7c40b6c8f4a3202f389afb45d26786dcc51e50a9))
 
 ### 🛠️ Continuous Integration
 
+- push tags and do not run other workflows on release ([257fe9b](https://github.com/cadgerfeast/vertis/commit/257fe9b9e2c00a50571c6d044b33c5182b467c07))
+
 - fix tag versioning and release process ([a661ec6](https://github.com/cadgerfeast/vertis/commit/a661ec6d26db829aa2b27c7f0c4274cec634e707))
-
-## 0.1.0 (05/10/2023 - 14:51)
-
-### ✨ New Features
-
-- add generate api command ([69ea60f](https://github.com/cadgerfeast/vertis/commit/69ea60fa84684a09dac6e88d19c2af224e7a5112))
-
-### 📚 Documentation
-
-- first documentation draft ([0770f52](https://github.com/cadgerfeast/vertis/commit/0770f52d2b5b600ce424c977893bdc81c9dcc5ea))
-
-### 🛠️ Continuous Integration
 
 - add checks workflow ([cffb827](https://github.com/cadgerfeast/vertis/commit/cffb8273641734cc3e9704c4bd230b719fc3ba94))
 
