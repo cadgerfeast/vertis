@@ -36,6 +36,7 @@ jobs:
         npm run changelog
         git commit -a --amend --no-edit
         git push --force
+        git push --tags --force
     - name: Publish
       run: npm run publish
       env:
