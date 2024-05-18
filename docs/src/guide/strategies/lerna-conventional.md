@@ -13,18 +13,18 @@ Here's an example of [unique CHANGELOG](https://github.com/cadgerfeast/vertis/bl
 ``` json
 {
 	...
-  "version": "0.1.2", // Either fixed or independent
-  "command": {
+	"version": "0.1.2", // Either fixed or independent
+	"command": {
 		...
-    "version": {
-      "conventionalCommits": true,
-      "message": "chore: release", // Feel free to change this, but "filterReleaseCommit" should be updated accordingly
-      "tagVersionPrefix": "vertis@", // Even if only one package is published, you should enforce package prefix, if multiple are, you can leave it undefined
-      "changelog": false, // Do not generate changelog, Vertis will ;)
-      "push": false // Do not push git tags, you'll do after changelog is generated
-    }
+		"version": {
+			"conventionalCommits": true,
+			"message": "chore: release", // Feel free to change this, but "filterReleaseCommit" should be updated accordingly
+			"tagVersionPrefix": "vertis@", // Even if only one package is published, you should enforce package prefix, if multiple are, you can leave it undefined
+			"changelog": false, // Do not generate changelog, Vertis will ;)
+			"push": false // Do not push git tags, you'll do after changelog is generated
+		}
 		...
-  }
+	}
 }
 ```
 
@@ -37,8 +37,8 @@ export default defineConfig({
 		filterPackage: (pkg) => !pkg.private, // Private package are ignored by default
 		filterCommit: (commit) => !['chore: release', 'chore: changelog'].includes(commit.message), // This is default behavior, please update to filter undesired commits
 		filterReleaseCommit: (commit) => commit.message === 'chore: release', // This is default behavior, please update to get all release commits
-    computePackageReleases: (tags, pkgs) => ([...]), // By default, packages are found if tag follow this format: <package-name>@<package-version>, but you can customize
-    releaseTarget: 'github' // By default, release command will publish to github
+		computePackageReleases: (tags, pkgs) => ([...]), // By default, packages are found if tag follow this format: <package-name>@<package-version>, but you can customize
+		releaseTarget: 'github' // By default, release command will publish to github
 	})
 });
 ```
