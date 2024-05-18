@@ -112,7 +112,7 @@ function computeConventionalChangelog (changelog: Changelog): ConventionalChange
 	return newChangelog;
 }
 
-function computeReleases (repositoryURL: string, changelog: Changelog, pkgs: Package[] , filterReleaseCommit: FilterReleaseCommit, computePackageReleases: ComputePackageReleases): Release[] {
+function computeReleases (repositoryURL: string, changelog: Changelog, pkgs: Package[], filterCommit: FilterCommit, filterReleaseCommit: FilterReleaseCommit, computePackageReleases: ComputePackageReleases): Release[] {
 	const releases: Release[] = [];
 	let releaseChangelog: Changelog = [];
 	let lastCommitTag: string|null = null;
@@ -135,10 +135,9 @@ function computeReleases (repositoryURL: string, changelog: Changelog, pkgs: Pac
 				});
 				releaseChangelog = [];
 				lastCommitTag = packageReleases[0].tag;
-			} else {
-				releaseChangelog.push(changelog[i]);
 			}
-		} else {
+		}
+		if (filterCommit(changelog[i])) {
 			releaseChangelog.push(changelog[i]);
 		}
 	}
@@ -155,11 +154,13 @@ function computeReleases (repositoryURL: string, changelog: Changelog, pkgs: Pac
 }
 
 type FilterPackage = (pkg: Package) => boolean;
+type FilterCommit = (commit: Commit) => boolean;
 type FilterReleaseCommit = (commit: Commit) => boolean;
 type ComputePackageReleases = (tags: string[], pkgs: string[]) => PackageRelease[];
 
 type LernaConventionalOptions = {
 	filterPackage: FilterPackage;
+	filterCommit: FilterCommit;
 	filterReleaseCommit: FilterReleaseCommit;
 	computePackageReleases: ComputePackageReleases;
 	releaseTarget: ReleaseTarget;
@@ -167,6 +168,7 @@ type LernaConventionalOptions = {
 
 const lernaConventionalDefaultOptions: LernaConventionalOptions = {
 	filterPackage: (pkg) => !pkg.private,
+	filterCommit: (commit) => !['chore: release', 'chore: changelog'].includes(commit.message),
 	filterReleaseCommit: (commit) => commit.message === 'chore: release',
 	computePackageReleases: (tags, pkgs) => {
 		const packageReleases: PackageRelease[] = [];
@@ -187,7 +189,7 @@ const lernaConventionalDefaultOptions: LernaConventionalOptions = {
 };
 
 export function lernaConventional (userOptions?: LernaConventionalOptions): () => Promise<Strategy> {
-	const { filterPackage, filterReleaseCommit, computePackageReleases, releaseTarget } = mergeAll([lernaConventionalDefaultOptions, userOptions]);
+	const { filterPackage, filterCommit, filterReleaseCommit, computePackageReleases, releaseTarget } = mergeAll([lernaConventionalDefaultOptions, userOptions]);
 	return async (): Promise<Strategy> => {
 		const pkgPath = path.resolve(process.cwd(), 'package.json');
 		const lernaConfigPath = path.resolve(process.cwd(), 'lerna.json');
@@ -207,7 +209,7 @@ export function lernaConventional (userOptions?: LernaConventionalOptions): () =
 			}
 			return {
 				computeChangelogContent (repositoryURL: string, changelog: Changelog) {
-					const releases: Release[] = computeReleases(repositoryURL, computeConventionalChangelog(changelog), pkgs, filterReleaseCommit, computePackageReleases);
+					const releases: Release[] = computeReleases(repositoryURL, computeConventionalChangelog(changelog), pkgs, filterCommit, filterReleaseCommit, computePackageReleases);
 					return eta.renderString(changelogTemplate, {
 						repositoryURL,
 						releases,
@@ -217,7 +219,7 @@ export function lernaConventional (userOptions?: LernaConventionalOptions): () =
 					});
 				},
 				computeReleases (repositoryURL: string, changelog: Changelog) {
-					return computeReleases(repositoryURL, computeConventionalChangelog(changelog), pkgs, filterReleaseCommit, computePackageReleases);
+					return computeReleases(repositoryURL, computeConventionalChangelog(changelog), pkgs, filterCommit, filterReleaseCommit, computePackageReleases);
 				},
 				computeReleaseContent (repositoryURL: string, release: Release) {
 					return eta.renderString(releaseTemplate, {

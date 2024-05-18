@@ -29,15 +29,16 @@ Here's an example of [unique CHANGELOG](https://github.com/cadgerfeast/vertis/bl
 ```
 
 ``` javascript
-import { defineConfig } from 'vertis',
+import { defineConfig } from 'vertis';
 import { lernaConventional } from 'vertis/strategy';
 
 export default defineConfig({
 	strategy: lernaConventional({
 		filterPackage: (pkg) => !pkg.private, // Private package are ignored by default
-		filterReleaseCommit: (commit) => commit.message === 'chore: release', // This is default behavior, please update if your release commit is different
-		computePackageReleases: (tags, pkgs) => ([...]), // By default, packages are found if tag follow this format: <package-name>@<package-version>, but you can customize
-		releaseTarget: 'github' // By default, release command will publish to github
+		filterCommit: (commit) => !['chore: release', 'chore: changelog'].includes(commit.message), // This is default behavior, please update to filter undesired commits
+		filterReleaseCommit: (commit) => commit.message === 'chore: release', // This is default behavior, please update to get all release commits
+    computePackageReleases: (tags, pkgs) => ([...]), // By default, packages are found if tag follow this format: <package-name>@<package-version>, but you can customize
+    releaseTarget: 'github' // By default, release command will publish to github
 	})
 });
 ```
