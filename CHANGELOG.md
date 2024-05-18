@@ -1,14 +1,38 @@
 # Changelog
 
+## [0.2.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.1.2...vertis@0.2.0) (18/05/2024 - 11:35)
+
+### ✨ New Features
+
+- add filter commit strategy ([8fd6b3b](https://github.com/cadgerfeast/vertis/commit/8fd6b3baf9c53afa2e7e09115ecc1d02dbd66ce8))
+
+### ⛑️ Reverts
+
+- use lerna@7.3.0 while waiting for a fix ([92d948c](https://github.com/cadgerfeast/vertis/commit/92d948ce3b5ab8636631422b1b56e69704f42306))
+
+- use lerna@8.1.2 while waiting for a fix ([a1f045c](https://github.com/cadgerfeast/vertis/commit/a1f045ca319a9ed24d06a9327918f0b8790f1448))
+
+### 📚 Documentation
+
+- replace independent changelog example by slithe ([db162bf](https://github.com/cadgerfeast/vertis/commit/db162bf7deb23a96cda40b916d73e3e9dc290546))
+
+### ♻️ Refactoring
+
+- add logger helper ([ed164bf](https://github.com/cadgerfeast/vertis/commit/ed164bf0cafb010a9141958a9445b9296d025c44))
+
+### 🎨 Style
+
+- use tab indentation from now on ([eddbebc](https://github.com/cadgerfeast/vertis/commit/eddbebc8c6d8d9a7a2e0270c2ef227534ff323cd))
+
+### 🏗 Chores
+
+- add commitizen ([74a154e](https://github.com/cadgerfeast/vertis/commit/74a154ebdec28e38302915fcbabbdabbd28fdb31))
+
 ## [0.1.2](https://github.com/cadgerfeast/vertis/compare/vertis@0.1.1...vertis@0.1.2) (11/10/2023 - 10:28)
 
 ### 🐛 Bug Fixes
 
 - write comparable release titles ([24267ca](https://github.com/cadgerfeast/vertis/commit/24267cab3831ea1c85ba0c9656cc1741e49adde2))
-
-### 🏗 Chores
-
-- changelog ([98dff75](https://github.com/cadgerfeast/vertis/commit/98dff756b6389bc50845e0ac9bb44c20dd2343bf))
 
 ## [0.1.1](https://github.com/cadgerfeast/vertis/compare/vertis@0.1.0...vertis@0.1.1) (10/10/2023 - 11:33)
 
@@ -63,16 +87,6 @@
 ### 🏗 Chores
 
 - rollback to published npm version ([15c532c](https://github.com/cadgerfeast/vertis/commit/15c532ca0ffdede6a0df037425ade52fd01fef8c))
-
-- release ([74a0515](https://github.com/cadgerfeast/vertis/commit/74a0515e4761b734b52c48c1dc2384aad082de4e))
-
-- release ([b72a4fb](https://github.com/cadgerfeast/vertis/commit/b72a4fbe0860ae6c9b246ea8564c7e774d511620))
-
-- release ([f086ac7](https://github.com/cadgerfeast/vertis/commit/f086ac7dc8f692e856daacaa39a3001be0ae5ce8))
-
-- release ([dfbd644](https://github.com/cadgerfeast/vertis/commit/dfbd644117e78b683b29aea7f4051041738d6e14))
-
-- release ([8c80e40](https://github.com/cadgerfeast/vertis/commit/8c80e40abbc6c4b9faef1cffd13c8caeb23a1121))
 
 ## [0.0.3](https://github.com/cadgerfeast/vertis/compare/vertis@0.0.2...vertis@0.0.3) (27/09/2023 - 12:27)
 
