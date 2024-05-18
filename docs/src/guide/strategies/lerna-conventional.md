@@ -6,7 +6,7 @@ It supports the [conventional commit types](https://github.com/conventional-chan
 
 If your monorepo project is using `independent` versioning, the changelog will also have a `Releases` section for each or you package, and each release will be grouped by date.
 
-Here's an example of [unique CHANGELOG](https://github.com/cadgerfeast/vertis/blob/master/CHANGELOG.md) and [independent CHANGELOG](https://github.com/cadgerfeast/madoc/blob/master/CHANGELOG.md).
+Here's an example of [unique CHANGELOG](https://github.com/cadgerfeast/vertis/blob/master/CHANGELOG.md) and [independent CHANGELOG](https://github.com/cadgerfeast/slithe/blob/main/CHANGELOG.md).
 
 ## Configuration
 
