@@ -1,6 +1,7 @@
 // Helpers
 import yargs, { Arguments } from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import { logger } from './helpers/logger.js';
 import c from 'chalk';
 // Commands
 import generate from './api/generate.js';
@@ -32,19 +33,19 @@ const help = [
   const argv: Arguments<Options> = await yargs(hideBin(process.argv)).help(false).argv;
   if (argv._.length === 0) {
     if (argv.version) {
-      console.info(__VERSION__);
+      logger.pure(__VERSION__);
     } else {
-      console.info(help);
+      logger.pure(help);
     }
   } else if (argv._.length === 1 && argv._[0] === 'help') {
-    console.info(help);
+    logger.pure(help);
   } else if (argv._.length === 1 && argv._[0] === 'version') {
-    console.info(__VERSION__);
+    logger.pure(__VERSION__);
   } else if (argv._[0] === 'generate') {
     generate(argv);
   } else if (argv._[0] === 'release') {
     release(argv);
   } else {
-    console.error(c.red(`Command ${c.yellow(argv._[0].toString())} does not exist.`));
+    logger.error(`Command ${c.yellow(argv._[0].toString())} does not exist.`);
   }
 })();

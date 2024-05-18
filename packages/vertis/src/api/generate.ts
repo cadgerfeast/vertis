@@ -6,6 +6,7 @@ import * as fs from '../helpers/fs.js';
 import { getConfig } from '../helpers/config.js';
 import { git, getRemoteGitURL } from '../helpers/git.js';
 import { Changelog } from '../index.js';
+import { logger } from '../helpers/logger.js';
 // Types
 interface Options {
   help?: boolean;
@@ -37,7 +38,7 @@ export async function generate ({ from, to, filePath }: GenerateOptions) {
   if (from) {
     const _fromHash = data.all.find(({ refs }) => refs.includes(`tag: ${from}`));
     if (!_fromHash) {
-      console.error(c.red(`Could not find ${c.yellow(`from=${from}`)} tag.`));
+      logger.error(`Could not find ${c.yellow(`from=${from}`)} tag.`);
       process.exit(1);
     }
     fromHash = _fromHash.hash;
@@ -45,12 +46,12 @@ export async function generate ({ from, to, filePath }: GenerateOptions) {
   if (to) {
     const _toHash = data.all.find(({ refs }) => refs.includes(`tag: ${to}`));
     if (!_toHash) {
-      console.error(c.red(`Could not find ${c.yellow(`to=${to}`)} tag.`));
+      logger.error(`Could not find ${c.yellow(`to=${to}`)} tag.`);
       process.exit(1);
     }
     toHash = _toHash.hash;
   }
-  console.debug(c.gray(`Generating changelog between ${c.white(`"${fromHash.slice(0, 7)}"`)} and ${c.white(`"${toHash.slice(0, 7)}"`)}`));
+  logger.debug(`Generating changelog between ${c.white(`"${fromHash.slice(0, 7)}"`)} and ${c.white(`"${toHash.slice(0, 7)}"`)}`);
   const changelog: Changelog = data.all.slice(data.all.findIndex(({ hash }) => hash === toHash), data.all.findIndex(({ hash }) => hash === fromHash) + 1).map((commit) => ({
     hash: commit.hash,
     message: commit.message,
@@ -69,14 +70,14 @@ export async function generate ({ from, to, filePath }: GenerateOptions) {
     changelogPath = filePath.slice(-3) === '.md' ? filePath : `${filePath}/CHANGELOG.md`;
   }
   changelogPath = path.resolve(process.cwd(), changelogPath);
-  console.debug(c.gray(`Generating changelog in: ${c.white(`"${path.normalize(changelogPath)}"`)}`));
+  logger.debug(`Generating changelog in: ${c.white(`"${path.normalize(changelogPath)}"`)}`);
   fs.ensureFileSync(changelogPath);
   fs.writeFileSync(changelogPath, computeChangelogContent(repositoryURL, changelog));
 }
 
 export default async (argv: Arguments<Options>) => {
   if (argv.help) {
-    console.info(help);
+    logger.pure(help);
   } else {
     await generate({
       from: argv.from,

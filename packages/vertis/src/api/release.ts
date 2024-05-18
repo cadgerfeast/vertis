@@ -5,6 +5,7 @@ import { getConfig } from '../helpers/config.js';
 import { git, getRemoteGitURL } from '../helpers/git.js';
 import { getGithubReleases, postGithubRelease } from '../helpers/github.js';
 import { Changelog } from '../index.js';
+import { logger } from '../helpers/logger.js';
 // Types
 interface Options {
   help?: boolean;
@@ -29,7 +30,7 @@ export async function release ({ tags }: ReleaseOptions) {
   const data = await git.log();
 	const config = await getConfig();
   const { releaseTarget, computeReleaseContent, computeReleases } = await config.strategy();
-  console.debug(c.gray(`Generating ${c.white(`"${releaseTarget}"`)} release.`));
+  logger.debug(`Generating ${c.white(`"${releaseTarget}"`)} release.`);
   const changelog: Changelog = data.all.map((commit) => ({
     hash: commit.hash,
     message: commit.message,
@@ -53,7 +54,7 @@ export async function release ({ tags }: ReleaseOptions) {
         const existingTags = releases.flatMap(({ packages }) => packages.map(({ tag }) => tag));
         for (const tag of tags) {
           if (!existingTags.includes(tag)) {
-            console.error(c.red(`${c.white(`"${tag}"`)} tag does not exist.`));
+            logger.error(`${c.white(`"${tag}"`)} tag does not exist.`);
             process.exit(1);
           }
         }
@@ -65,24 +66,24 @@ export async function release ({ tags }: ReleaseOptions) {
         const githubReleases = await getGithubReleases(releaseTags, repositoryURL);
         for (const githubRelease of githubReleases.reverse()) {
           if (githubRelease.exists) {
-            console.warn(c.yellow(`Release already exists for ${c.white(`"${githubRelease.tag}"`)}`));
+            logger.warn(`Release already exists for ${c.white(`"${githubRelease.tag}"`)}`);
           } else {
-            console.debug(c.gray(`Publishing Github Release for ${c.white(`"${githubRelease.tag}"`)}.`));
+            logger.debug(`Publishing Github Release for ${c.white(`"${githubRelease.tag}"`)}.`);
             try {
               const release = releases.find(({ packages }) => packages.find(({ tag }) => githubRelease.tag === tag))!;
               const markdownContent = computeReleaseContent(repositoryURL, release);
               await postGithubRelease(githubRelease.tag, release.title, repositoryURL, markdownContent);
             } catch (err) {
-              console.error(c.red(`An error occurred while publishing new "${githubRelease.tag}" release from github: ${c.yellow(err)}`));
+              logger.error(`An error occurred while publishing new "${githubRelease.tag}" release from github: ${c.yellow(err)}`);
               process.exit(1);
             }
           }
         }
       } catch (err) {
-        console.error(c.red(`An error occurred while getting releases from github: ${c.yellow(err)}`));
+        logger.error(`An error occurred while getting releases from github: ${c.yellow(err)}`);
       }
     } else {
-      console.error(c.red(`${c.white(`"${releaseTarget}"`)} is an unknown release target.`));
+      logger.error(`${c.white(`"${releaseTarget}"`)} is an unknown release target.`);
       process.exit(1);
     }
   }
@@ -90,7 +91,7 @@ export async function release ({ tags }: ReleaseOptions) {
 
 export default async (argv: Arguments<Options>) => {
   if (argv.help) {
-    console.info(help);
+    logger.pure(help);
   } else {
     let tags: string[]|'*'|undefined;
     if (argv.tags) {
