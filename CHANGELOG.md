@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.2.0...vertis@0.3.0) (29/08/2024 - 12:39)
+
+### ✨ New Features
+
+- add bitbucket git target ([c6f36d6](https://github.com/cadgerfeast/vertis/commit/c6f36d60118ff7aa041c7923461bb0e8e50f0fbf))
+
 ## [0.2.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.1.2...vertis@0.2.0) (18/05/2024 - 11:35)
 
 ### ✨ New Features
