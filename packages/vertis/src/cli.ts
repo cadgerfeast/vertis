@@ -12,8 +12,6 @@ interface Options {
   version?: boolean;
 }
 
-console.info('SNETCH');
-
 const help = [
   `${c.green(`Vertis v${__VERSION__} in use.`)}`,
   '',
