@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.1](https://github.com/cadgerfeast/vertis/compare/vertis@0.3.0...vertis@0.3.1) (29/08/2024 - 12:44)
+
+### 🐛 Bug Fixes
+
+- remove test log from cli ([d1d4c2c](https://github.com/cadgerfeast/vertis/commit/d1d4c2c79516c796e5a209496d754b49d17fdd30))
+
 ## [0.3.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.2.0...vertis@0.3.0) (29/08/2024 - 12:39)
 
 ### ✨ New Features
