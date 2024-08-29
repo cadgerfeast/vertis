@@ -24,7 +24,7 @@
 
 <%- for (const commit of commits) { -%>
 
-- <%= commit.name %> ([<%= commit.hash.slice(0, 7) %>](<%= it.repositoryURL %>/commit/<%= commit.hash %>))
+- <%= commit.name %> ([<%= commit.hash.slice(0, 7) %>](<%= it.commitURL %>/<%= commit.hash %>))
 
 <%- } -%>
 

@@ -14,13 +14,13 @@ import lernaConventionalReleasePackage from './templates/lerna-conventional/rele
 // Constants
 const eta = new Eta({ autoTrim: false });
 
-export type ReleaseTarget = 'github';
+export type GitTarget = 'github'|'bitbucket';
 
 export type Strategy = {
+	gitTarget: GitTarget;
 	computeChangelogContent: (repositoryURL: string, changelog: Changelog) => string;
 	computeReleaseContent: (repositoryURL: string, release: Release) => string;
-	computeReleases: (repositoryURL: string, changelog: Changelog) => Release[];
-	releaseTarget: ReleaseTarget;
+	computeReleases: (gitTarget: GitTarget, repositoryURL: string, changelog: Changelog) => Release[];
 };
 
 function getWorkspacePackages (pkgPath: string): Package[] {
@@ -112,7 +112,29 @@ function computeConventionalChangelog (changelog: Changelog): ConventionalChange
 	return newChangelog;
 }
 
-function computeReleases (repositoryURL: string, changelog: Changelog, pkgs: Package[], filterCommit: FilterCommit, filterReleaseCommit: FilterReleaseCommit, computePackageReleases: ComputePackageReleases): Release[] {
+function buildCompareLink (gitTarget: GitTarget, repositoryURL: string, fromTag: string, toTag: string) {
+	switch (gitTarget) {
+		case 'bitbucket': {
+			return `${repositoryURL}/branches/compare/${encodeURIComponent(`${toTag}\r${fromTag}`)}`;
+		}
+		default: {
+			return `${repositoryURL}/compare/${fromTag}...${toTag}`;
+		}
+	}
+}
+
+function getCommitURL (gitTarget: GitTarget, repositoryURL: string) {
+	switch (gitTarget) {
+		case 'bitbucket': {
+			return `${repositoryURL}/commits`;
+		}
+		default: {
+			return `${repositoryURL}/commit`;
+		}
+	}
+}
+
+function computeReleases (gitTarget: GitTarget, repositoryURL: string, changelog: Changelog, pkgs: Package[], filterCommit: FilterCommit, filterReleaseCommit: FilterReleaseCommit, computePackageReleases: ComputePackageReleases): Release[] {
 	const releases: Release[] = [];
 	let releaseChangelog: Changelog = [];
 	let lastCommitTag: string|null = null;
@@ -124,7 +146,7 @@ function computeReleases (repositoryURL: string, changelog: Changelog, pkgs: Pac
 				const title = pkgs.length === 1 ? `${packageReleases[0].newVersion} (${releaseDate})` : releaseDate;
 				let markdownTitle = title;
 				if (lastCommitTag) {
-					const compareLink = `${repositoryURL}/compare/${lastCommitTag}...${packageReleases[0].tag}`;
+					const compareLink = buildCompareLink(gitTarget, repositoryURL, lastCommitTag, packageReleases[0].tag);
 					markdownTitle = pkgs.length === 1 ? `[${packageReleases[0].newVersion}](${compareLink}) (${releaseDate})` : `[${releaseDate}](${compareLink})`;
 				}
 				releases.push({
@@ -159,14 +181,15 @@ type FilterReleaseCommit = (commit: Commit) => boolean;
 type ComputePackageReleases = (tags: string[], pkgs: string[]) => PackageRelease[];
 
 type LernaConventionalOptions = {
+	gitTarget: GitTarget;
 	filterPackage: FilterPackage;
 	filterCommit: FilterCommit;
 	filterReleaseCommit: FilterReleaseCommit;
 	computePackageReleases: ComputePackageReleases;
-	releaseTarget: ReleaseTarget;
 };
 
 const lernaConventionalDefaultOptions: LernaConventionalOptions = {
+	gitTarget: 'github',
 	filterPackage: (pkg) => !pkg.private,
 	filterCommit: (commit) => !['chore: release', 'chore: changelog'].includes(commit.message),
 	filterReleaseCommit: (commit) => commit.message === 'chore: release',
@@ -184,12 +207,11 @@ const lernaConventionalDefaultOptions: LernaConventionalOptions = {
 			}
 		}
 		return packageReleases;
-	},
-	releaseTarget: 'github'
+	}
 };
 
 export function lernaConventional (userOptions?: LernaConventionalOptions): () => Promise<Strategy> {
-	const { filterPackage, filterCommit, filterReleaseCommit, computePackageReleases, releaseTarget } = mergeAll([lernaConventionalDefaultOptions, userOptions]);
+	const { gitTarget, filterPackage, filterCommit, filterReleaseCommit, computePackageReleases } = mergeAll([lernaConventionalDefaultOptions, userOptions]);
 	return async (): Promise<Strategy> => {
 		const pkgPath = path.resolve(process.cwd(), 'package.json');
 		const lernaConfigPath = path.resolve(process.cwd(), 'lerna.json');
@@ -208,29 +230,31 @@ export function lernaConventional (userOptions?: LernaConventionalOptions): () =
 				throw new Error('Could not find any workspace');
 			}
 			return {
+				gitTarget,
 				computeChangelogContent (repositoryURL: string, changelog: Changelog) {
-					const releases: Release[] = computeReleases(repositoryURL, computeConventionalChangelog(changelog), pkgs, filterCommit, filterReleaseCommit, computePackageReleases);
+					const releases: Release[] = computeReleases(gitTarget, repositoryURL, computeConventionalChangelog(changelog), pkgs, filterCommit, filterReleaseCommit, computePackageReleases);
 					return eta.renderString(changelogTemplate, {
 						repositoryURL,
+						commitURL: getCommitURL(gitTarget, repositoryURL),
 						releases,
 						CONVENTIONAL_TYPES,
 						CONVENTIONAL_EMOJIS,
 						CONVENTIONAL_LABELS
 					});
 				},
-				computeReleases (repositoryURL: string, changelog: Changelog) {
-					return computeReleases(repositoryURL, computeConventionalChangelog(changelog), pkgs, filterCommit, filterReleaseCommit, computePackageReleases);
+				computeReleases (gitTarget: GitTarget, repositoryURL: string, changelog: Changelog) {
+					return computeReleases(gitTarget, repositoryURL, computeConventionalChangelog(changelog), pkgs, filterCommit, filterReleaseCommit, computePackageReleases);
 				},
 				computeReleaseContent (repositoryURL: string, release: Release) {
 					return eta.renderString(releaseTemplate, {
 						repositoryURL,
+						commitURL: getCommitURL(gitTarget, repositoryURL),
 						release,
 						CONVENTIONAL_TYPES,
 						CONVENTIONAL_EMOJIS,
 						CONVENTIONAL_LABELS
 					});
-				},
-				releaseTarget
+				}
 			};
 		}
 		throw new Error('Could not find any package.json');

@@ -34,11 +34,11 @@ import { lernaConventional } from 'vertis/strategy';
 
 export default defineConfig({
 	strategy: lernaConventional({
+		gitTarget: 'github', // By default, vertis generates changelogs and releases for github repositories
 		filterPackage: (pkg) => !pkg.private, // Private package are ignored by default
 		filterCommit: (commit) => !['chore: release', 'chore: changelog'].includes(commit.message), // This is default behavior, please update to filter undesired commits
 		filterReleaseCommit: (commit) => commit.message === 'chore: release', // This is default behavior, please update to get all release commits
-		computePackageReleases: (tags, pkgs) => ([...]), // By default, packages are found if tag follow this format: <package-name>@<package-version>, but you can customize
-		releaseTarget: 'github' // By default, release command will publish to github
+		computePackageReleases: (tags, pkgs) => ([...]) // By default, packages are found if tag follow this format: <package-name>@<package-version>, but you can customize
 	})
 });
 ```
