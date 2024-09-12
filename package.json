@@ -16,6 +16,7 @@
     "test": "nx run-many -t test --output-style=stream",
     "lint": "nx run-many -t lint --output-style=stream",
     "preview": "nx preview docs",
+    "exec": "node ./packages/vertis/cli.js",
     "version": "lerna version",
     "changelog": "vertis generate",
     "publish": "lerna publish from-package",
@@ -27,7 +28,7 @@
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^8.0.3",
-    "lerna": "^7.3.0",
+    "lerna": "^8.1.8",
     "nx": "^16.9.1"
   }
 }
