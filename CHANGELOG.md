@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.2](https://github.com/cadgerfeast/vertis/compare/vertis@0.3.1...vertis@0.3.2) (12/09/2024 - 12:59)
+
+### 🐛 Bug Fixes
+
+- update vertis dependencies ([e4be0c1](https://github.com/cadgerfeast/vertis/commit/e4be0c153d90678971cf5d25a28cf9da09323ffc))
+
 ## [0.3.1](https://github.com/cadgerfeast/vertis/compare/vertis@0.3.0...vertis@0.3.1) (29/08/2024 - 12:44)
 
 ### 🐛 Bug Fixes
