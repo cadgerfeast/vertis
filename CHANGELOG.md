@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.4.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.3.2...vertis@0.4.0) (21/11/2024 - 14:00)
+
+### ✨ New Features
+
+- add autolink capabilities ([e5631fc](https://github.com/cadgerfeast/vertis/commit/e5631fcc0e519a4bb1228517c5781372b45a9b4b))
+
+- migrate to use c12, add typescript config ([e1c1c91](https://github.com/cadgerfeast/vertis/commit/e1c1c913bcb0eefc0147cbc209cd694ca782e7a0))
+
+### 🐛 Bug Fixes
+
+- library maintenance, better commit parsing ([f35285c](https://github.com/cadgerfeast/vertis/commit/f35285cc32f3c8a91cd1dfc0f31ffed83fa5ce28))
+
+### 🛠️ Continuous Integration
+
+- add prerelease workflow ([88f3d68](https://github.com/cadgerfeast/vertis/commit/88f3d68e914b9db7d52eb82d19ee108bc3dd473e))
+
 ## [0.3.2](https://github.com/cadgerfeast/vertis/compare/vertis@0.3.1...vertis@0.3.2) (12/09/2024 - 12:59)
 
 ### 🐛 Bug Fixes
