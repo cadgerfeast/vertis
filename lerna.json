@@ -15,7 +15,8 @@
     },
     "publish": {
       "private": false,
-      "yes": true
+      "yes": true,
+      "preid": "alpha"
     }
   }
 }

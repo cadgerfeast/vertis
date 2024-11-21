@@ -1,10 +1,10 @@
-name: Release
+name: Prerelease
 
 on:
   workflow_dispatch:
 
 jobs:
-  release:
+  prerelease:
     runs-on: ubuntu-20.04
     steps:
     - name: Checkout
@@ -30,15 +30,6 @@ jobs:
     - name: Build
       run: npm run build -- --projects vertis
     - name: Version
-      run: npm run version
-    - name: Changelog
-      run: |
-        npm run changelog
-        git commit -a -m "chore: changelog"
-        git push --force
+      run: npm run version:prerelease
     - name: Publish
-      run: npm run publish
-    - name: Release
-      run: npm run release
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: npm run publish:prerelease

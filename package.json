@@ -7,7 +7,7 @@
     "shared/*"
   ],
   "scripts": {
-    "prepare": "husky install && npm run build",
+    "prepare": "husky install",
     "commit": "cz",
     "commitlint": "commitlint --edit",
     "dev": "nx run-many -t dev --output-style=stream",
@@ -17,8 +17,10 @@
     "preview": "nx preview docs",
     "exec": "node ./packages/vertis/cli.js",
     "version": "lerna version",
+    "version:prerelease": "lerna version --conventional-prerelease",
     "changelog": "vertis generate",
     "publish": "lerna publish from-package",
+    "publish:prerelease": "lerna publish from-package --canary --no-push",
     "release": "vertis release"
   },
   "devDependencies": {
