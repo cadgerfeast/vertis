@@ -3,14 +3,20 @@ import { mergeAll } from 'remeda';
 import { loadConfig,  } from 'c12';
 import { Strategy, lernaConventional } from '../strategy.js';
 
-type VertisConfig = {
-	strategy: () => Promise<Strategy>;
+type AutoLink = {
+  keyPrefix: string;
+  url: string;
 };
 
-type UserConfig = Partial<VertisConfig>;
+export type DefineStrategy = (config: VertisConfig) => Promise<Strategy>;
+type VertisOptions = {
+  autoLinks?: AutoLink[];
+	strategy?: DefineStrategy;
+};
+export type VertisConfig = Required<Pick<VertisOptions, keyof VertisOptions>> & VertisOptions;
 
-export function defineConfig (config: UserConfig): UserConfig {
-	return config;
+export function defineConfig (options: VertisOptions): VertisOptions {
+	return options;
 }
 
 export function mergeConfig (...configs: VertisConfig[]): VertisConfig {
@@ -18,6 +24,7 @@ export function mergeConfig (...configs: VertisConfig[]): VertisConfig {
 }
 
 const defaultConfig: VertisConfig = {
+  autoLinks: [],
 	strategy: lernaConventional()
 };
 

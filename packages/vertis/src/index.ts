@@ -33,7 +33,7 @@ export type PackageRelease = {
 	oldVersion?: string;
 };
 
-export { defineConfig } from './helpers/config.js';
+export { defineConfig, type VertisConfig } from './helpers/config.js';
 
 export { generate, type GenerateOptions } from './api/generate.js';
 export { release, type ReleaseOptions } from './api/release.js';
