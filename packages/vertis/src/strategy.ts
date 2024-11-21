@@ -5,6 +5,7 @@ import { Eta } from 'eta';
 import dayjs from 'dayjs'
 import { globSync } from 'glob';
 import { mergeAll } from 'remeda';
+import CC from '@conventional-commits/parser';
 import { Changelog, Commit, Package, PackageRelease, Release } from './index.js';
 // Templates
 import lernaConventionalChangelogDate from './templates/lerna-conventional/changelog/date.eta?raw';
@@ -84,30 +85,26 @@ export type ConventionalCommit = Commit & {
 };
 export type ConventionalChangelog = ConventionalCommit[];
 
-function getCommitData (message: string) {
-	const splits = new RegExp(`^(?<type>${CONVENTIONAL_TYPES.join('|')})(?<scope>\\(\\w+\\)?((?=:\\s)|(?=!:\\s)))?(?<breaking>!)?(?<subject>:\\s.*)?|^(?<merge>Merge \\w+)`).exec(message);
-	if (splits) {
-		return {
-			type: splits[1],
-			message: splits[5].replace(':', '').trim()
-		};
-	}
-	return {
-		type: 'unknown',
-		message
-	};
+function isConventionalType (toCheck: unknown): toCheck is ConventionalType {
+  return typeof toCheck === "string" && (CONVENTIONAL_TYPES as readonly string[]).includes(toCheck);
+}
+
+function getCommitData (commit: Commit): ConventionalCommit {
+  const ast = CC.parser(commit.message);
+  const summary = ast.children.find((child) => child.type === 'summary');
+  const rawType = summary?.children.find((child) => child.type === 'type')?.value;
+  const title = summary?.children.find((child) => String(child.type)=== 'text')?.value ?? commit.message;
+  return {
+    ...commit,
+    type: isConventionalType(rawType) ? rawType : 'unknown',
+    name: title
+  };
 }
 
 function computeConventionalChangelog (changelog: Changelog): ConventionalChangelog {
 	const newChangelog: ConventionalChangelog = [];
 	for (const commit of changelog) {
-		const data = getCommitData(commit.message);
-		const type = ((CONVENTIONAL_TYPES as readonly string[]).includes(data.type) ? data.type : 'unknown') as ConventionalType;
-		newChangelog.push({
-			...commit,
-			name: data.message,
-			type
-		});
+		newChangelog.push(getCommitData(commit));
 	}
 	return newChangelog;
 }
@@ -238,7 +235,7 @@ export function lernaConventional (userOptions?: LernaConventionalOptions): () =
 				gitTarget,
 				computeChangelogContent (repositoryURL: string, changelog: Changelog) {
 					const releases: Release[] = computeReleases(gitTarget, repositoryURL, computeConventionalChangelog(changelog), pkgs, filterCommit, filterReleaseCommit, computePackageReleases);
-					return eta.renderString(changelogTemplate, {
+          return eta.renderString(changelogTemplate, {
 						repositoryURL,
 						commitURL: getCommitURL(gitTarget, repositoryURL),
 						releases,
