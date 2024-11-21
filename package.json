@@ -19,6 +19,7 @@
     "version": "lerna version",
     "changelog": "vertis generate",
     "publish": "lerna publish from-package",
+    "publish:prerelease": "lerna publish from-package --conventional-bump-prerelease",
     "release": "vertis release"
   },
   "devDependencies": {

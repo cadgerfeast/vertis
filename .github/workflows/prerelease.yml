@@ -1,15 +1,22 @@
-name: Release
+name: Prerelease
 
 on:
   workflow_dispatch:
+    inputs:
+      branch:
+        type: string
+        description: 'Branch to prerelease from'
+        required: true
+        default: 'master'
 
 jobs:
-  release:
+  prerelease:
     runs-on: ubuntu-20.04
     steps:
     - name: Checkout
       uses: actions/checkout@v4
       with:
+        ref: ${{ github.event.inputs.branch }}
         token: ${{ secrets.GH_TOKEN }}
         fetch-depth: 0
     - name: Setup Node
@@ -31,14 +38,5 @@ jobs:
       run: npm run build -- --projects vertis
     - name: Version
       run: npm run version
-    - name: Changelog
-      run: |
-        npm run changelog
-        git commit -a -m "chore: changelog"
-        git push --force
     - name: Publish
-      run: npm run publish
-    - name: Release
-      run: npm run release
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: npm run publish:prerelease
