@@ -181,14 +181,15 @@ type FilterReleaseCommit = (commit: Commit) => boolean;
 type ComputePackageReleases = (tags: string[], pkgs: string[]) => PackageRelease[];
 
 type LernaConventionalOptions = {
-	gitTarget: GitTarget;
-	filterPackage: FilterPackage;
-	filterCommit: FilterCommit;
-	filterReleaseCommit: FilterReleaseCommit;
-	computePackageReleases: ComputePackageReleases;
+	gitTarget?: GitTarget;
+	filterPackage?: FilterPackage;
+	filterCommit?: FilterCommit;
+	filterReleaseCommit?: FilterReleaseCommit;
+	computePackageReleases?: ComputePackageReleases;
 };
+type LernaConventionalConfig = Required<Pick<LernaConventionalOptions, keyof LernaConventionalOptions>> & LernaConventionalOptions;
 
-const lernaConventionalDefaultOptions: LernaConventionalOptions = {
+const lernaConventionalDefaultOptions: LernaConventionalConfig = {
 	gitTarget: 'github',
 	filterPackage: (pkg) => !pkg.private,
 	filterCommit: (commit) => !['chore: release', 'chore: changelog'].includes(commit.message),
@@ -210,8 +211,12 @@ const lernaConventionalDefaultOptions: LernaConventionalOptions = {
 	}
 };
 
+function computeLernaConventionalConfig (options?: LernaConventionalOptions): LernaConventionalConfig {
+  return mergeAll([lernaConventionalDefaultOptions, options]);
+}
+
 export function lernaConventional (userOptions?: LernaConventionalOptions): () => Promise<Strategy> {
-	const { gitTarget, filterPackage, filterCommit, filterReleaseCommit, computePackageReleases } = mergeAll([lernaConventionalDefaultOptions, userOptions]);
+	const { gitTarget, filterPackage, filterCommit, filterReleaseCommit, computePackageReleases } = computeLernaConventionalConfig(userOptions);
 	return async (): Promise<Strategy> => {
 		const pkgPath = path.resolve(process.cwd(), 'package.json');
 		const lernaConfigPath = path.resolve(process.cwd(), 'lerna.json');

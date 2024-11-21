@@ -1,7 +1,6 @@
 // Helpers
-import * as path from 'path';
-import * as fs from 'fs';
 import { mergeAll } from 'remeda';
+import { loadConfig,  } from 'c12';
 import { Strategy, lernaConventional } from '../strategy.js';
 
 type VertisConfig = {
@@ -23,11 +22,6 @@ const defaultConfig: VertisConfig = {
 };
 
 export async function getConfig (dir: string = process.cwd()): Promise<VertisConfig> {
-	const configFile = path.resolve(dir, 'vertis.config.js');
-	let config: VertisConfig = defaultConfig;
-	if (fs.existsSync(configFile)) {
-		const userConfig = await import(`file://${configFile}`);
-		config = mergeConfig(config, userConfig.default);
-	}
-	return config;
+  const res = await loadConfig<VertisConfig>({ name: 'vertis', cwd: dir });
+	return mergeConfig(defaultConfig, res.config);
 }
