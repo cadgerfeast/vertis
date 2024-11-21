@@ -64,7 +64,7 @@ export async function generate ({ from, to, filePath }: GenerateOptions) {
     }
   }));
   const config = await getConfig();
-  const { computeChangelogContent } = await config.strategy();
+  const { computeChangelogContent } = await config.strategy(config);
   let changelogPath = 'CHANGELOG.md';
   if (filePath) {
     changelogPath = filePath.slice(-3) === '.md' ? filePath : `${filePath}/CHANGELOG.md`;

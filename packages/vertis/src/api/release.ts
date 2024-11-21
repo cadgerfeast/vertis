@@ -29,7 +29,7 @@ export async function release ({ tags }: ReleaseOptions) {
   const repositoryURL = await getRemoteGitURL();
   const data = await git.log();
 	const config = await getConfig();
-  const { gitTarget, computeReleaseContent, computeReleases } = await config.strategy();
+  const { gitTarget, computeReleaseContent, computeReleases } = await config.strategy(config);
   logger.debug(`Generating ${c.white(`"${gitTarget}"`)} release.`);
   const changelog: Changelog = data.all.map((commit) => ({
     hash: commit.hash,

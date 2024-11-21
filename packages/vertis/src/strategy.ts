@@ -6,7 +6,8 @@ import dayjs from 'dayjs'
 import { globSync } from 'glob';
 import { mergeAll } from 'remeda';
 import CC from '@conventional-commits/parser';
-import { Changelog, Commit, Package, PackageRelease, Release } from './index.js';
+import { Changelog, Commit, Package, PackageRelease, Release, VertisConfig } from './index.js';
+import { DefineStrategy } from './helpers/config.js';
 // Templates
 import lernaConventionalChangelogDate from './templates/lerna-conventional/changelog/date.eta?raw';
 import lernaConventionalChangelogPackage from './templates/lerna-conventional/changelog/package.eta?raw';
@@ -89,11 +90,31 @@ function isConventionalType (toCheck: unknown): toCheck is ConventionalType {
   return typeof toCheck === "string" && (CONVENTIONAL_TYPES as readonly string[]).includes(toCheck);
 }
 
-function getCommitData (commit: Commit): ConventionalCommit {
+function getCommitData (commit: Commit, { autoLinks }: VertisConfig): ConventionalCommit {
   const ast = CC.parser(commit.message);
   const summary = ast.children.find((child) => child.type === 'summary');
   const rawType = summary?.children.find((child) => child.type === 'type')?.value;
+  const scope = summary?.children.find((child) => child.type === 'scope')?.value;
   const title = summary?.children.find((child) => String(child.type)=== 'text')?.value ?? commit.message;
+  let name = title;
+  // Scope Addition
+  if (scope) {
+    for (const { keyPrefix } of autoLinks) {
+      const re = new RegExp(keyPrefix + "(\\d+)", "g");
+      const res = re.exec(scope);
+      if (res) {
+        name = `${res[0]}: ${name}`;
+      }
+    }
+  }
+  // Autolink Replacements
+  for (const { keyPrefix, url } of autoLinks) {
+    const re = new RegExp(keyPrefix + "(\\d+)", "g");
+    const res = re.exec(name);
+    if (res) {
+      name = name.replace(re, `[${keyPrefix}$1](${url.replace("<key>", "$1")})`);
+    }
+  }
   return {
     ...commit,
     type: isConventionalType(rawType) ? rawType : 'unknown',
@@ -101,10 +122,10 @@ function getCommitData (commit: Commit): ConventionalCommit {
   };
 }
 
-function computeConventionalChangelog (changelog: Changelog): ConventionalChangelog {
+function computeConventionalChangelog (changelog: Changelog, config: VertisConfig): ConventionalChangelog {
 	const newChangelog: ConventionalChangelog = [];
 	for (const commit of changelog) {
-		newChangelog.push(getCommitData(commit));
+		newChangelog.push(getCommitData(commit, config));
 	}
 	return newChangelog;
 }
@@ -212,9 +233,9 @@ function computeLernaConventionalConfig (options?: LernaConventionalOptions): Le
   return mergeAll([lernaConventionalDefaultOptions, options]);
 }
 
-export function lernaConventional (userOptions?: LernaConventionalOptions): () => Promise<Strategy> {
+export function lernaConventional (userOptions?: LernaConventionalOptions): DefineStrategy {
 	const { gitTarget, filterPackage, filterCommit, filterReleaseCommit, computePackageReleases } = computeLernaConventionalConfig(userOptions);
-	return async (): Promise<Strategy> => {
+	return async (config): Promise<Strategy> => {
 		const pkgPath = path.resolve(process.cwd(), 'package.json');
 		const lernaConfigPath = path.resolve(process.cwd(), 'lerna.json');
 		if (fs.existsSync(pkgPath) && fs.existsSync(lernaConfigPath)) {
@@ -234,7 +255,7 @@ export function lernaConventional (userOptions?: LernaConventionalOptions): () =
 			return {
 				gitTarget,
 				computeChangelogContent (repositoryURL: string, changelog: Changelog) {
-					const releases: Release[] = computeReleases(gitTarget, repositoryURL, computeConventionalChangelog(changelog), pkgs, filterCommit, filterReleaseCommit, computePackageReleases);
+					const releases: Release[] = computeReleases(gitTarget, repositoryURL, computeConventionalChangelog(changelog, config), pkgs, filterCommit, filterReleaseCommit, computePackageReleases);
           return eta.renderString(changelogTemplate, {
 						repositoryURL,
 						commitURL: getCommitURL(gitTarget, repositoryURL),
@@ -245,7 +266,7 @@ export function lernaConventional (userOptions?: LernaConventionalOptions): () =
 					});
 				},
 				computeReleases (gitTarget: GitTarget, repositoryURL: string, changelog: Changelog) {
-					return computeReleases(gitTarget, repositoryURL, computeConventionalChangelog(changelog), pkgs, filterCommit, filterReleaseCommit, computePackageReleases);
+					return computeReleases(gitTarget, repositoryURL, computeConventionalChangelog(changelog, config), pkgs, filterCommit, filterReleaseCommit, computePackageReleases);
 				},
 				computeReleaseContent (repositoryURL: string, release: Release) {
 					return eta.renderString(releaseTemplate, {
