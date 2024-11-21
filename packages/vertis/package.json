@@ -53,6 +53,7 @@
     "vite-plugin-dts": "^4.2.1"
   },
   "dependencies": {
+    "c12": "^2.0.1",
     "chalk": "^5.3.0",
     "dayjs": "^1.11.10",
     "eta": "^3.1.1",
