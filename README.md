@@ -1,6 +1,6 @@
 # Vertis
 
-<p align="center"><br/><img width="200" src="https://vertis.cadgerfeast.dev/favicon.svg" alt="Vertis Icon"/><br/><br/></p>
+<p align="center"><br/><img width="200" src="https://vertis.cadgerfeast.com/favicon.svg" alt="Vertis Icon"/><br/><br/></p>
 
 > Your Changelog Companion
 
@@ -10,7 +10,7 @@ It allows to easily generate changelogs for you projects.
 
 ## 📄 Get Started
 
-Please check out the official documentation to get started using **Vertis**, visit [vertis.cadgerfeast.dev](https://vertis.cadgerfeast.dev).
+Please check out the official documentation to get started using **Vertis**, visit [vertis.cadgerfeast.com](https://vertis.cadgerfeast.com).
 
 ## 👏 Contributing
 
