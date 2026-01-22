@@ -1,6 +1,18 @@
 # Changelog
 
-## [0.4.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.3.2...vertis@0.4.0) (21/11/2024 - 14:00)
+## [0.4.1](https://github.com/cadgerfeast/vertis/compare/vertis@0.4.0...vertis@0.4.1) (22/01/2026 - 15:51)
+
+### 🐛 Bug Fixes
+
+- fallback to unknown commit if cannot be parsed ([c9c2d17](https://github.com/cadgerfeast/vertis/commit/c9c2d17a0978e67a4dd18106c94736c9b9c568c6))
+
+### 🏗 Chores
+
+- migrate to .com ([131896f](https://github.com/cadgerfeast/vertis/commit/131896fa503ccc14c883043fdbefd7d3509ba2cb))
+
+- force publish prereleases, reorder dependencies ([eddfe50](https://github.com/cadgerfeast/vertis/commit/eddfe50250720cd92e5341f37c38e9248148c29a))
+
+## [0.4.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.3.2...vertis@0.4.0) (21/11/2024 - 15:00)
 
 ### ✨ New Features
 
@@ -16,25 +28,25 @@
 
 - add prerelease workflow ([88f3d68](https://github.com/cadgerfeast/vertis/commit/88f3d68e914b9db7d52eb82d19ee108bc3dd473e))
 
-## [0.3.2](https://github.com/cadgerfeast/vertis/compare/vertis@0.3.1...vertis@0.3.2) (12/09/2024 - 12:59)
+## [0.3.2](https://github.com/cadgerfeast/vertis/compare/vertis@0.3.1...vertis@0.3.2) (12/09/2024 - 14:59)
 
 ### 🐛 Bug Fixes
 
 - update vertis dependencies ([e4be0c1](https://github.com/cadgerfeast/vertis/commit/e4be0c153d90678971cf5d25a28cf9da09323ffc))
 
-## [0.3.1](https://github.com/cadgerfeast/vertis/compare/vertis@0.3.0...vertis@0.3.1) (29/08/2024 - 12:44)
+## [0.3.1](https://github.com/cadgerfeast/vertis/compare/vertis@0.3.0...vertis@0.3.1) (29/08/2024 - 14:44)
 
 ### 🐛 Bug Fixes
 
 - remove test log from cli ([d1d4c2c](https://github.com/cadgerfeast/vertis/commit/d1d4c2c79516c796e5a209496d754b49d17fdd30))
 
-## [0.3.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.2.0...vertis@0.3.0) (29/08/2024 - 12:39)
+## [0.3.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.2.0...vertis@0.3.0) (29/08/2024 - 14:39)
 
 ### ✨ New Features
 
 - add bitbucket git target ([c6f36d6](https://github.com/cadgerfeast/vertis/commit/c6f36d60118ff7aa041c7923461bb0e8e50f0fbf))
 
-## [0.2.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.1.2...vertis@0.2.0) (18/05/2024 - 11:35)
+## [0.2.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.1.2...vertis@0.2.0) (18/05/2024 - 13:35)
 
 ### ✨ New Features
 
@@ -62,13 +74,13 @@
 
 - add commitizen ([74a154e](https://github.com/cadgerfeast/vertis/commit/74a154ebdec28e38302915fcbabbdabbd28fdb31))
 
-## [0.1.2](https://github.com/cadgerfeast/vertis/compare/vertis@0.1.1...vertis@0.1.2) (11/10/2023 - 10:28)
+## [0.1.2](https://github.com/cadgerfeast/vertis/compare/vertis@0.1.1...vertis@0.1.2) (11/10/2023 - 12:28)
 
 ### 🐛 Bug Fixes
 
 - write comparable release titles ([24267ca](https://github.com/cadgerfeast/vertis/commit/24267cab3831ea1c85ba0c9656cc1741e49adde2))
 
-## [0.1.1](https://github.com/cadgerfeast/vertis/compare/vertis@0.1.0...vertis@0.1.1) (10/10/2023 - 11:33)
+## [0.1.1](https://github.com/cadgerfeast/vertis/compare/vertis@0.1.0...vertis@0.1.1) (10/10/2023 - 13:33)
 
 ### 🐛 Bug Fixes
 
@@ -82,7 +94,7 @@
 
 - fix package.json github repository link ([f8d2d94](https://github.com/cadgerfeast/vertis/commit/f8d2d945cd1bf75fefc054c71ecf3da112c9fa7e))
 
-## [0.1.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.0.3...vertis@0.1.0) (10/10/2023 - 10:03)
+## [0.1.0](https://github.com/cadgerfeast/vertis/compare/vertis@0.0.3...vertis@0.1.0) (10/10/2023 - 12:03)
 
 ### ✨ New Features
 
@@ -122,13 +134,13 @@
 
 - rollback to published npm version ([15c532c](https://github.com/cadgerfeast/vertis/commit/15c532ca0ffdede6a0df037425ade52fd01fef8c))
 
-## [0.0.3](https://github.com/cadgerfeast/vertis/compare/vertis@0.0.2...vertis@0.0.3) (27/09/2023 - 12:27)
+## [0.0.3](https://github.com/cadgerfeast/vertis/compare/vertis@0.0.2...vertis@0.0.3) (27/09/2023 - 14:27)
 
 ### ♻️ Refactoring
 
 - add generate command delimiter ([ff90006](https://github.com/cadgerfeast/vertis/commit/ff900067862864180a6b0424a04b007c1ef8054d))
 
-## 0.0.2 (27/09/2023 - 10:25)
+## 0.0.2 (27/09/2023 - 12:25)
 
 ### 🛠️ Continuous Integration
 

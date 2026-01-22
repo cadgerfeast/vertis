@@ -18,10 +18,10 @@
     "exec": "node ./packages/vertis/cli.js",
     "version": "lerna version",
     "version:prerelease": "lerna version --conventional-prerelease --no-git-tag-version --no-push --force-publish",
-    "changelog": "vertis generate",
+    "changelog": "node ./packages/vertis/cli.js generate",
     "publish": "lerna publish from-package",
     "publish:prerelease": "lerna publish from-package --canary --no-git-tag-version --no-push --force-publish",
-    "release": "vertis release"
+    "release": "node ./packages/vertis/cli.js release"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
