@@ -91,35 +91,43 @@ function isConventionalType (toCheck: unknown): toCheck is ConventionalType {
 }
 
 function getCommitData (commit: Commit, { autoLinks }: VertisConfig): ConventionalCommit {
-  const ast = CC.parser(commit.message);
-  const summary = ast.children.find((child) => child.type === 'summary');
-  const rawType = summary?.children.find((child) => child.type === 'type')?.value;
-  const scope = summary?.children.find((child) => child.type === 'scope')?.value;
-  const title = summary?.children.find((child) => String(child.type)=== 'text')?.value ?? commit.message;
-  let name = title;
-  // Scope Addition
-  if (scope) {
-    for (const { keyPrefix } of autoLinks) {
-      const re = new RegExp(keyPrefix + "(\\d+)", "g");
-      const res = re.exec(scope);
-      if (res) {
-        name = `${res[0]}: ${name}`;
+  try {
+    const ast = CC.parser(commit.message);
+    const summary = ast.children.find((child) => child.type === 'summary');
+    const rawType = summary?.children.find((child) => child.type === 'type')?.value;
+    const scope = summary?.children.find((child) => child.type === 'scope')?.value;
+    const title = summary?.children.find((child) => String(child.type)=== 'text')?.value ?? commit.message;
+    let name = title;
+    // Scope Addition
+    if (scope) {
+      for (const { keyPrefix } of autoLinks) {
+        const re = new RegExp(keyPrefix + "(\\d+)", "g");
+        const res = re.exec(scope);
+        if (res) {
+          name = `${res[0]}: ${name}`;
+        }
       }
     }
-  }
-  // Autolink Replacements
-  for (const { keyPrefix, url } of autoLinks) {
-    const re = new RegExp(keyPrefix + "(\\d+)", "g");
-    const res = re.exec(name);
-    if (res) {
-      name = name.replace(re, `[${keyPrefix}$1](${url.replace("<key>", "$1")})`);
+    // Autolink Replacements
+    for (const { keyPrefix, url } of autoLinks) {
+      const re = new RegExp(keyPrefix + "(\\d+)", "g");
+      const res = re.exec(name);
+      if (res) {
+        name = name.replace(re, `[${keyPrefix}$1](${url.replace("<key>", "$1")})`);
+      }
     }
+    return {
+      ...commit,
+      type: isConventionalType(rawType) ? rawType : 'unknown',
+      name: title
+    };
+  } catch {
+    return {
+      ...commit,
+      type: 'unknown',
+      name: commit.message
+    };
   }
-  return {
-    ...commit,
-    type: isConventionalType(rawType) ? rawType : 'unknown',
-    name: title
-  };
 }
 
 function computeConventionalChangelog (changelog: Changelog, config: VertisConfig): ConventionalChangelog {
